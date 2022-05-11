@@ -13,13 +13,13 @@ const book10 = new Book('Smoke and the rose', 'Amora Duha', 'fantasy', 39, 15, 4
 let book_list = [book1, book2, book3, book4, book5, book6, book7, book8, book9, book10];
 const inStorageContainer = "libri-disponibili-div";
 const templateDisponibili = `
-<div class="book-container">
-    <h3 class="title">#TITOLO</h3>
-    <h5 class="type">#GENERE</h5>
-    <h5 class="price">#PREZZO$</h5>
-    <h5 class="copies">Copie:#NUMEROCOPIE</h5>
-    <button class="button">Venduto</button>
-</div>`
+    <div class="book-container">
+        <h3 class="title">#TITOLO</h3>
+        <h5 class="type">#GENERE</h5>
+        <h5 class="price">#PREZZO$</h5>
+        <h5 class="copies">Copie:#NUMEROCOPIE</h5>
+        <button class="button">Venduto</button>
+    </div>`
 
 let notAvailableBooks = [];
 const notInStorageContainer = "libri-non-disponibili-div";
@@ -28,7 +28,7 @@ const templateNonDisponibili = `
         <h3>#TITOLO</h3>
         <h4>#AUTORE</h4>
         <h5>#GENERE</h5>
-        <h5>#PREZZO</h5>
+        <h5>#PREZZO$</h5>
     </div>`
 
 
@@ -37,24 +37,18 @@ function removeCopy(book) {
        if (book.copies === 0) {
            book_list = book_list.filter(b => b.title !== book.title)
            notAvailableBooks.push(book);
-           console.log('FHFHFH')
-           console.log(book_list)
-           console.log(notAvailableBooks)
        }
        updateHTML();
 } 
-
 
 function updateHTML() {
     displayBooks(book_list, templateDisponibili, inStorageContainer);
     displayBooks(notAvailableBooks, templateNonDisponibili, notInStorageContainer);
 }
 
-
 function displayBooks(bookArray, template, containerName) {
     const container = document.getElementById(containerName);
     container.innerHTML = "";
-
     for (let i = 0; i < bookArray.length; i++) {
         const book = bookArray[i];
         const bookTemplate = template.replace("#TITOLO", book.title)
@@ -63,13 +57,10 @@ function displayBooks(bookArray, template, containerName) {
                                                 .replace("#PREZZO", book.round_number(book.get_public_price(), 2))
                                                 .replace("#NUMEROCOPIE", book.copies);
         const div = document.createElement("div");
-
         div.innerHTML = bookTemplate;
         container.appendChild(div);
-
         const button = div.querySelector("button");
         if (button) button.onclick = () => removeCopy(book);
     }
-
 }
 updateHTML();
